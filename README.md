@@ -93,10 +93,10 @@ ApplyMate/
 
 ## 👨‍💻 Author
 
-**Shlok Dhanokar**
-- Portfolio: [shlokdhanokar.vercel.app](https://shlokdhanokar.vercel.app)
-- LinkedIn: [@shlokdhanokar](https://www.linkedin.com/in/shlokdhanokar)
-- GitHub: [@shlokdhanokar](https://github.com/shlokdhanokar)
+**Your Name**
+- Portfolio: [yourportfolio.com](https://yourportfolio.com)
+- LinkedIn: [@yourusername](https://www.linkedin.com/in/yourusername)
+- GitHub: [@yourusername](https://github.com/yourusername)
 
 ---
 
