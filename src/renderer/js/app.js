@@ -1,3 +1,103 @@
+// ===== Web Compatibility Layer =====
+if (!window.applymate) {
+  console.log("Running in Web Mode (Vercel/Browser)");
+  
+  // Hide Desktop-only UI elements
+  document.addEventListener('DOMContentLoaded', () => {
+    const alwaysOnTopBtn = document.getElementById('btn-always-on-top');
+    if (alwaysOnTopBtn) alwaysOnTopBtn.style.display = 'none';
+  });
+
+  const getDummyData = () => ({
+    links: [
+      { id: generateId(), label: 'Portfolio', url: 'https://yourportfolio.com', icon: '🌐' },
+      { id: generateId(), label: 'GitHub', url: 'https://github.com/yourusername', icon: '🐙' },
+      { id: generateId(), label: 'LinkedIn', url: 'https://linkedin.com/in/yourusername', icon: '💼' }
+    ],
+    answers: [
+      {
+        id: generateId(),
+        title: 'Tell me about yourself',
+        text: `I'm a passionate Software Engineer currently pursuing my studies in Computer Science. I have a strong foundation in backend development and machine learning.`,
+        tags: ['General', 'HR'],
+        pinned: true
+      },
+      {
+        id: generateId(),
+        title: 'Project Explanation (Short)',
+        text: `One of my key projects is an AI-powered automation agent that categorizes incoming data and triggers workflows.`,
+        tags: ['Tech', 'Projects'],
+        pinned: true
+      }
+    ],
+    copyHistory: [],
+    settings: { theme: 'dark', alwaysOnTop: false }
+  });
+
+  window.applymate = {
+    getData: async () => {
+      const stored = localStorage.getItem('applymate-data');
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) {}
+      }
+      const dummy = getDummyData();
+      localStorage.setItem('applymate-data', JSON.stringify(dummy));
+      return dummy;
+    },
+    saveData: async (data) => {
+      localStorage.setItem('applymate-data', JSON.stringify(data));
+      return true;
+    },
+    copyToClipboard: async (text) => {
+      await navigator.clipboard.writeText(text);
+      return true;
+    },
+    openExternal: async (url) => {
+      if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
+      window.open(url, '_blank');
+      return true;
+    },
+    exportData: async () => {
+      const data = localStorage.getItem('applymate-data') || JSON.stringify(getDummyData());
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'applymate-backup.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      return { success: true };
+    },
+    importData: async () => {
+      return new Promise((resolve) => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'application/json';
+        input.onchange = (e) => {
+          const file = e.target.files[0];
+          if (!file) return resolve({ success: false });
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            try {
+              const data = JSON.parse(event.target.result);
+              localStorage.setItem('applymate-data', JSON.stringify(data));
+              resolve({ success: true, data });
+            } catch (err) {
+              resolve({ success: false, error: err.message });
+            }
+          };
+          reader.readAsText(file);
+        };
+        input.click();
+      });
+    },
+    toggleAlwaysOnTop: async () => false,
+    readClipboard: async () => {
+      try { return await navigator.clipboard.readText(); } catch (e) { return ''; }
+    }
+  };
+}
+
 // ===== App State & Controller =====
 
 const AppState = (() => {
