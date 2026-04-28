@@ -64,6 +64,7 @@ class Store {
         }
       ],
       copyHistory: [],
+      todos: [],
       settings: {
         theme: 'dark',
         alwaysOnTop: false

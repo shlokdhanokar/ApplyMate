@@ -31,6 +31,7 @@ if (!window.applymate) {
       }
     ],
     copyHistory: [],
+    todos: [],
     settings: { theme: 'dark', alwaysOnTop: false }
   });
 
@@ -186,6 +187,7 @@ function renderAll(data, currentSection) {
     links: '🔗 Links',
     answers: '📝 Answers',
     quickcopy: '⚡ Quick Copy',
+    todos: '✅ Things to Do',
     history: '📋 Copy History'
   };
   document.getElementById('section-title').textContent = titles[currentSection] || '';
@@ -201,6 +203,7 @@ function renderAll(data, currentSection) {
   LinksModule.render(data.links || [], query);
   AnswersModule.render(data.answers || [], query);
   QuickCopyModule.render(data.answers || []);
+  TodosModule.render(data.todos || []);
   renderHistory(data.copyHistory || []);
 }
 
@@ -262,6 +265,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Clear history
   document.getElementById('btn-clear-history').addEventListener('click', () => AppState.clearHistory());
+
+  // Todo input — add task on Enter
+  document.getElementById('todo-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const input = e.target;
+      TodosModule.add(input.value);
+      input.value = '';
+      input.focus();
+    }
+  });
 
   // Modal close buttons
   document.querySelectorAll('.modal-close, .btn-secondary[data-modal]').forEach(btn => {
