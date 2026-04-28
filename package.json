@@ -1,0 +1,45 @@
+{
+  "name": "applymate",
+  "version": "1.0.0",
+  "description": "A modern desktop productivity tool for managing frequently used answers, links, and quick copy-paste operations during job/internship applications.",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder --win",
+    "build:portable": "electron-builder --win portable"
+  },
+  "keywords": ["productivity", "job-application", "copy-paste", "electron"],
+  "author": "Shlok Dhanokar",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^41.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.shlokdhanokar.applymate",
+    "productName": "ApplyMate",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ApplyMate"
+    }
+  }
+}

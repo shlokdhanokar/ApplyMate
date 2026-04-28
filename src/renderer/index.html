@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApplyMate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">⚡</div>
+        <h1 class="brand-title">ApplyMate</h1>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-section="links" id="nav-links">
+          <span class="nav-icon">🔗</span>
+          <span class="nav-label">Links</span>
+        </button>
+        <button class="nav-item" data-section="answers" id="nav-answers">
+          <span class="nav-icon">📝</span>
+          <span class="nav-label">Answers</span>
+        </button>
+        <button class="nav-item" data-section="quickcopy" id="nav-quickcopy">
+          <span class="nav-icon">⚡</span>
+          <span class="nav-label">Quick Copy</span>
+        </button>
+        <button class="nav-item" data-section="history" id="nav-history">
+          <span class="nav-icon">📋</span>
+          <span class="nav-label">Copy History</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="sidebar-action" id="btn-theme-toggle" title="Toggle Theme">
+          <span class="nav-icon" id="theme-icon">🌙</span>
+          <span class="nav-label">Dark Mode</span>
+        </button>
+        <button class="sidebar-action" id="btn-always-on-top" title="Always on Top">
+          <span class="nav-icon">📌</span>
+          <span class="nav-label">Pin Window</span>
+        </button>
+        <button class="sidebar-action" id="btn-export" title="Export Data">
+          <span class="nav-icon">📤</span>
+          <span class="nav-label">Export</span>
+        </button>
+        <button class="sidebar-action" id="btn-import" title="Import Data">
+          <span class="nav-icon">📥</span>
+          <span class="nav-label">Import</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-left">
+          <h2 class="section-title" id="section-title">🔗 Links</h2>
+        </div>
+        <div class="header-right">
+          <div class="search-box" id="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Search... (Ctrl+F)" autocomplete="off" spellcheck="false">
+            <button class="search-clear" id="search-clear" title="Clear search">✕</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Panels -->
+      <div class="content-area" id="content-area">
+        <!-- Links Panel -->
+        <section class="panel active" id="panel-links">
+          <div class="panel-actions">
+            <button class="btn-add" id="btn-add-link">
+              <span>+</span> Add Link
+            </button>
+          </div>
+          <div class="cards-grid" id="links-grid"></div>
+        </section>
+
+        <!-- Answers Panel -->
+        <section class="panel" id="panel-answers">
+          <div class="panel-actions">
+            <div class="tag-filters" id="tag-filters">
+              <button class="tag-chip active" data-tag="all">All</button>
+              <button class="tag-chip" data-tag="General">General</button>
+              <button class="tag-chip" data-tag="HR">HR</button>
+              <button class="tag-chip" data-tag="AI">AI</button>
+              <button class="tag-chip" data-tag="Backend">Backend</button>
+            </div>
+            <button class="btn-add" id="btn-add-answer">
+              <span>+</span> Add Answer
+            </button>
+          </div>
+          <div class="answers-list" id="answers-list"></div>
+        </section>
+
+        <!-- Quick Copy Panel -->
+        <section class="panel" id="panel-quickcopy">
+          <div class="quickcopy-hint">
+            <span class="hint-icon">💡</span>
+            Pin answers from the Answers tab to access them here. Use <kbd>Ctrl</kbd>+<kbd>1-9</kbd> for instant copy.
+          </div>
+          <div class="quickcopy-grid" id="quickcopy-grid"></div>
+        </section>
+
+        <!-- Copy History Panel -->
+        <section class="panel" id="panel-history">
+          <div class="panel-actions">
+            <button class="btn-add btn-danger" id="btn-clear-history">
+              <span>🗑️</span> Clear History
+            </button>
+          </div>
+          <div class="history-list" id="history-list"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Link Modal -->
+  <div class="modal-overlay" id="modal-link">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-link-title">Add Link</h3>
+        <button class="modal-close" data-modal="modal-link">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="input-link-label">Label</label>
+          <input type="text" id="input-link-label" placeholder="e.g., GitHub" spellcheck="false">
+        </div>
+        <div class="form-group">
+          <label for="input-link-url">URL</label>
+          <input type="text" id="input-link-url" placeholder="https://..." spellcheck="false">
+        </div>
+        <div class="form-group">
+          <label for="input-link-icon">Icon (emoji)</label>
+          <input type="text" id="input-link-icon" placeholder="e.g., 🔗" maxlength="4">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-modal="modal-link">Cancel</button>
+        <button class="btn btn-primary" id="btn-save-link">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Answer Modal -->
+  <div class="modal-overlay" id="modal-answer">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h3 id="modal-answer-title">Add Answer</h3>
+        <button class="modal-close" data-modal="modal-answer">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="input-answer-title">Title</label>
+          <input type="text" id="input-answer-title" placeholder="e.g., Tell me about yourself" spellcheck="false">
+        </div>
+        <div class="form-group">
+          <label for="input-answer-text">Answer</label>
+          <textarea id="input-answer-text" rows="8" placeholder="Type your answer here..." spellcheck="false"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Tags</label>
+          <div class="tag-selector" id="tag-selector">
+            <label class="tag-option"><input type="checkbox" value="General"> General</label>
+            <label class="tag-option"><input type="checkbox" value="HR"> HR</label>
+            <label class="tag-option"><input type="checkbox" value="AI"> AI</label>
+            <label class="tag-option"><input type="checkbox" value="Backend"> Backend</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="input-answer-pinned">
+            <span>📌 Pin to Quick Copy</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-modal="modal-answer">Cancel</button>
+        <button class="btn btn-primary" id="btn-save-answer">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/links.js"></script>
+  <script src="js/answers.js"></script>
+  <script src="js/quickcopy.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
