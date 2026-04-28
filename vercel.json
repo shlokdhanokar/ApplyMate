@@ -1,4 +1,5 @@
 {
+  "buildCommand": "echo 'Skipping electron build on Vercel'",
   "rewrites": [
     {
       "source": "/(.*)",
